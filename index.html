@@ -126,6 +126,44 @@ table.pun{border-collapse:collapse;margin:.3rem 0}table.pun th,table.pun td{bord
 .confirm{background:var(--coral-2);border-radius:12px;padding:.7rem .9rem;margin-top:.6rem}
 @media (max-width:560px){.drawer{width:100%}.dr-body{padding:.6rem .8rem}.quick button{font-size:.8rem}.seg button{padding:.4rem .55rem;font-size:.88rem}h1{font-size:1.45rem}.card{padding:.95rem}.nav a{padding:.3rem .45rem;font-size:.85rem}.msg.you{margin-left:.6rem}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.dg-svg svg{max-width:560px;margin:0 auto}
+.dg .lbl{font-size:12px;font-weight:700;fill:#1E2A2F;paint-order:stroke;stroke:#fff;stroke-width:4px;stroke-linejoin:round;pointer-events:none}
+.dg-part[data-p]{cursor:pointer}
+.dg-part.done{filter:drop-shadow(0 0 3px #2E7D32) drop-shadow(0 0 2px #2E7D32)}
+.dg-mark{cursor:pointer}
+.dg-mark circle{fill:#fff;stroke:#1E2A2F;stroke-width:2}
+.dg-mark text{fill:#1E2A2F;pointer-events:none}
+.dg-mark.ready:not(.ok) circle{stroke:var(--purple);stroke-width:3}
+.dg-mark.ok circle{fill:var(--green);stroke:var(--green)}
+.dg-mark.ok text{fill:#fff}
+.dg-mark:focus{outline:none}.dg-mark:focus circle{stroke:var(--purple);stroke-width:4}
+.dg-msg{min-height:1.6em;margin:.5rem 0;border-radius:10px;padding:.4rem .7rem;background:#F7F4EE}
+.dg-msg.ok{background:var(--green-2)}.dg-msg.no{background:var(--coral-2)}
+.lab-chips{display:flex;flex-wrap:wrap;gap:.45rem}
+.lab-chip{border:2px solid var(--purple);background:#fff;color:var(--purple);border-radius:999px;padding:.35rem .8rem;font-weight:700;min-height:40px}
+.lab-chip[aria-pressed="true"]{background:var(--purple);color:#fff}
+.loop input[type=range]{width:100%;accent-color:var(--teal);margin-top:.3rem}
+.loop-gauge svg{max-width:420px}
+.loopsteps{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.5rem;margin-top:.4rem}
+.loopsteps div{background:#F7F4EE;border-radius:10px;padding:.5rem .6rem;font-size:.9rem}
+.loopsteps b{display:block;color:var(--teal)}
+.days{display:flex;gap:.3rem}
+.days span{width:1.7rem;height:1.7rem;border-radius:50%;background:#EFEAE1;color:var(--soft);display:inline-flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700}
+.days span.on{background:var(--teal);color:#fff}
+.days span.today{box-shadow:0 0 0 2px var(--sun)}
+.bodymap svg{width:100%;max-width:600px;height:auto;display:block;margin:0 auto}
+.bm-txt{font-size:13px;font-weight:700;fill:var(--ink);paint-order:stroke;stroke:#fff;stroke-width:4px;stroke-linejoin:round}
+.bm-line{stroke:#B9AE9C;stroke-width:1.5;stroke-dasharray:3 3}
+.bm-link .rg{transition:filter .15s}
+.bm-link:hover .rg,.bm-link:focus .rg{filter:drop-shadow(0 0 4px var(--purple)) drop-shadow(0 0 2px var(--purple))}
+.bm-link:hover .bm-txt,.bm-link:focus .bm-txt{fill:var(--purple);text-decoration:underline}
+.bm-link:focus{outline:none}
+.match-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:.7rem;margin-top:.6rem}
+.mt{text-align:left;border:2px solid var(--line);background:#fff;border-radius:12px;padding:.6rem .8rem;min-height:50px;color:var(--ink);display:flex;flex-direction:column;justify-content:center;font-size:.92rem}
+.mt:hover:not([disabled]){border-color:var(--teal)}
+.mt.sel{border-color:var(--purple);background:var(--purple-2)}
+.mt.ok{border-color:var(--green);background:var(--green-2);opacity:.6}
+@media (max-width:560px){.match-grid{grid-template-columns:1fr 1.3fr;gap:.4rem}.mt{padding:.5rem;font-size:.85rem}}
 </style>
 </head>
 <body>
@@ -134,6 +172,7 @@ table.pun{border-collapse:collapse;margin:.3rem 0}table.pun th,table.pun td{bord
   <nav class="nav" aria-label="Main">
     <a href="#home" data-nav="home">Learn</a>
     <a href="#review" data-nav="review">Review<span id="dueBadge"></span></a>
+    <a href="#play" data-nav="play">Play</a>
     <a href="#words" data-nav="words">Words</a>
     <a href="#options" data-nav="options">Options</a>
     <a href="#about" data-nav="about">About</a>
@@ -1103,6 +1142,8 @@ CHAPTERS.push(
 );
 
 CHAPTERS.forEach(ch=>{if(!ch.unit){ch.unit=1;ch.teas="S.2.1";}});
+const EXTRA_VIS={c6:{s4:"dg-cell"},c18:{s3:"dg-heart"},c19:{s1:"dg-lungs"},c20:{s1:"dg-gut"},c21:{s2:"dg-urinary"},c12:{s1:"loop-temp"},c13:{s4:"loop-temp"},c17:{s4:"loop-glucose"}};
+CHAPTERS.forEach(ch=>{const x=EXTRA_VIS[ch.id];if(x)ch.sections.forEach(sec=>{if(x[sec.id]&&!sec.vis)sec.vis=x[sec.id];});});
 const UNITS={1:{name:"Cells and Transport",sub:"How cells are built and how things move in and out"},2:{name:"Biology for Nursing",sub:"Organelles, molecules, DNA, genetics, and microbes"},3:{name:"The Human Body",sub:"Anatomy and physiology of all 11 body systems"}};
 const CH_BY={}; const QBY={};
 CHAPTERS.forEach(ch=>{CH_BY[ch.id]=ch; ch.quiz.forEach(q=>{QBY[q[0]]={q,ch}});});
@@ -1113,9 +1154,9 @@ CHAPTERS.forEach(ch=>ch.sections.forEach(sec=>[...sec.s,...(sec.m||[])].join(" "
    STATE (saved in this browser only)
    ============================================================ */
 const LS_KEY="cellwise-v1";
-function defaultState(){return {settings:{lang:"none",other:"",size:"m",rate:0.9,detail:false},ch:{},deck:{}}}
+function defaultState(){return {settings:{lang:"none",other:"",size:"m",rate:0.9,detail:false,goal:10},ch:{},deck:{},act:{},match:{}}}
 let S=defaultState();
-function load(){try{const raw=localStorage.getItem(LS_KEY);if(raw){const d=JSON.parse(raw);const def=defaultState();S={...def,...d,settings:{...def.settings,...(d.settings||{})},ch:d.ch||{},deck:d.deck||{}};}}catch(e){}}
+function load(){try{const raw=localStorage.getItem(LS_KEY);if(raw){const d=JSON.parse(raw);const def=defaultState();S={...def,...d,settings:{...def.settings,...(d.settings||{})},ch:d.ch||{},deck:d.deck||{},act:d.act||{},match:d.match||{}};}}catch(e){}}
 function save(){try{localStorage.setItem(LS_KEY,JSON.stringify(S))}catch(e){}}
 function chState(id){if(!S.ch[id])S.ch[id]={read:false,best:null,attempts:0,mastered:false,missed:[]};return S.ch[id];}
 const DAY=864e5, INTERVALS=[0,1,3,7,14,30];
@@ -1157,6 +1198,8 @@ function stopAnims(){anims.forEach(f=>{try{f()}catch(e){}});anims=[];}
    VISUALS
    ============================================================ */
 function visual(id){
+ if(id.startsWith("dg-"))return dgBlock(id.slice(3));
+ if(id.startsWith("loop-"))return loopBlock(id.slice(5));
  if(id==="celltypes")return `<div class="viz"><svg viewBox="0 0 560 240" role="img" aria-label="A small prokaryotic cell with no nucleus next to a larger eukaryotic cell with a nucleus">
  <text x="105" y="26" text-anchor="middle" font-size="16" font-weight="700" fill="#1E2A2F">Prokaryote</text>
  <text x="105" y="46" text-anchor="middle" font-size="13" fill="#52606A">(bacterium) · no nucleus</text>
@@ -1219,6 +1262,7 @@ function visual(id){
  return "";
 }
 function initVisuals(){
+ initDg();initLoops();
  // flows
  document.querySelectorAll(".flowbox").forEach(box=>{drawFlow(box,"show");box.addEventListener("click",e=>{const b=e.target.closest("[data-fmode]");if(b)drawFlow(box,b.dataset.fmode);});});
  // punnett
@@ -1281,9 +1325,11 @@ function renderHome(){currentCh=null;const nx=nextStep();const due=dueIds().leng
  const cards=Object.entries(UNITS).map(([u,info])=>{const list=CHAPTERS.filter(c=>c.unit==+u);const done=list.filter(c=>chState(c.id).mastered).length;return `<section class="unit-head"><div class="ch-num">Unit ${u} · ${done} of ${list.length} mastered</div><h2>${esc(info.name)}</h2><p class="muted" style="margin:.1rem 0 .7rem">${esc(info.sub)}</p><div class="bar" style="max-width:320px;margin-bottom:.8rem"><i style="width:${list.length?done/list.length*100:0}%"></i></div></section><div class="grid">${list.map(card).join("")}</div>`;}).join("");
  show(`<section class="hero"><h1>Biology for nursing, in simple English.</h1><p><b>${CHAPTERS.length} chapters</b> covering the biology and human anatomy &amp; physiology parts of the ATI TEAS 7 science outline.</p><p>Short lessons, clear pictures, and quizzes that explain every answer. Tap any <button class="term" data-term="cell">purple word</button> to see its meaning${S.settings.lang!=="none"&&LANGS[S.settings.lang]?" and translation":""}. Press 🔊 to hear the text.</p>
  <div class="steps"><div class="step"><b>1. Read</b>Short lessons with pictures</div><div class="step"><b>2. Check</b>Quick questions while you read</div><div class="step"><b>3. Fix</b>Re-learn only what you missed</div><div class="step"><b>4. Review</b>Come back in a few days to remember</div></div></section>
+ ${streakCard()}
  ${nx?`<div class="card" style="border-color:var(--teal)"><h2>Your next step</h2><p>${esc(nx.label)}</p><a class="btn big" href="${nx.href}">Go →</a></div>`:`<div class="card"><h2>🎉 You mastered all ${CHAPTERS.length} chapters!</h2><p>Keep your memory strong with review.</p></div>`}
  <div class="card"><h2>📝 TEAS-style practice test</h2><p class="muted">Mixed questions from all the chapters, like the real exam. You see an explanation after each answer.</p><a class="btn ghost" href="#practice">Start a practice test</a></div>
  ${due?`<div class="card"><h2>🔁 ${due} question${due>1?"s":""} to review today</h2><p class="muted">Short reviews spread over days help you remember for longer.</p><a class="btn ghost" href="#review">Start review</a></div>`:""}
+ ${bodyMapCard()}
  ${cards}
  ${S.settings.lang==="none"?`<p class="muted small" style="margin-top:1rem">Need help in your language? Choose Español, বাংলা, 中文, or another language in <a href="#options">Options</a>.</p>`:""}`,"home");}
 
@@ -1305,6 +1351,7 @@ function renderLesson(id){const ch=CH_BY[id];currentCh=ch;const det=S.settings.d
  <div class="card"><h3>Words in this chapter</h3><div class="row">${terms.map(t=>`<button class="term" data-term="${t}" style="margin-right:.3rem">${esc(G[t][0])}</button>`).join("")}</div></div>
  <div class="toolbar"><span class="small muted">Show:</span><div class="seg" role="group" aria-label="Detail level"><button id="detS" aria-pressed="${!det}">Simple</button><button id="detM" aria-pressed="${det}">More detail</button></div></div>
  ${secs}
+ ${casesBlock(ch.id)}
  <section class="card"><h2>✍️ Say it in your own words</h2><p>Writing an idea in your own words helps you remember it. Use this sentence frame if you want:</p><p class="frame">${esc(ch.say[0])}</p>
  <label class="sr" for="ownWords">Your explanation</label><textarea id="ownWords" maxlength="600" placeholder="Write 2 or 3 sentences…"></textarea>
  <div class="row" style="margin-top:.6rem"><button class="btn" id="checkOwn">🧑‍🏫 Get Tutor feedback</button><button class="btn plain" id="showModel">Show a model answer</button></div><div id="modelBox"></div></section>
@@ -1315,8 +1362,8 @@ function renderLesson(id){const ch=CH_BY[id];currentCh=ch;const det=S.settings.d
  $("#detM").onclick=()=>{S.settings.detail=true;save();document.querySelectorAll("details.more").forEach(d=>d.open=true);$("#detM").setAttribute("aria-pressed","true");$("#detS").setAttribute("aria-pressed","false");};
  $("#showModel").onclick=()=>{$("#modelBox").innerHTML=`<div class="fb ok" style="margin-top:.6rem"><b>Model answer:</b> ${esc(ch.say[1])} ${listenBtn(ch.say[1])}<p class="small" style="margin:.4rem 0 0">Compare it with yours. Did you use the key words?</p></div>`;};
  $("#checkOwn").onclick=()=>{const t=$("#ownWords").value.trim();if(t.length<10){toast("Please write at least one sentence first.");$("#ownWords").focus();return;}tutorCheckOwnWords(ch,t);};
- $("#toQuiz").onclick=()=>{chState(ch.id).read=true;save();};
- const st=chState(ch.id);if(!st.read){const obs=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){st.read=true;save();obs.disconnect();}});obs.observe($("#toQuiz"));anims.push(()=>obs.disconnect());}
+ $("#toQuiz").onclick=()=>markRead(ch.id);
+ const st=chState(ch.id);if(!st.read){const obs=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){markRead(ch.id);obs.disconnect();}});obs.observe($("#toQuiz"));anims.push(()=>obs.disconnect());}
 }
 function tableBlock(t){const [head,rows]=t;return `<div class="viz" style="overflow-x:auto"><table class="sum"><thead><tr>${head.map(h=>`<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;}
 function flowBlock(id,steps){FLOWS[id]=steps;return `<div class="viz flowbox" data-flow="${id}"><div class="row" style="justify-content:space-between"><b>Step by step</b><div class="seg" role="group" aria-label="Flow mode"><button data-fmode="show" aria-pressed="true">Show</button><button data-fmode="practice" aria-pressed="false">Practice the order</button></div></div><div class="flow-area"></div></div>`;}
@@ -1330,7 +1377,7 @@ function checkBlock(chId,sec){const [q,opts,a,why]=sec.chk;const order=shuffle(o
 
 /* ---------- quiz ---------- */
 let Q=null;
-function startQuiz(chId,mode,ids){currentCh=chId?CH_BY[chId]:null;const list=ids||CH_BY[chId].quiz.map(q=>q[0]);Q={chId,mode,list:mode==="first"?list.slice():shuffle(list.slice()),i:0,res:[],answered:false};if(chId&&mode==="first"){chState(chId).read=true;save();}renderQ();}
+function startQuiz(chId,mode,ids){currentCh=chId?CH_BY[chId]:null;const list=ids||CH_BY[chId].quiz.map(q=>q[0]);Q={chId,mode,list:mode==="first"?list.slice():shuffle(list.slice()),i:0,res:[],answered:false};if(chId&&mode==="first"){markRead(chId);}renderQ();}
 function qOptions(q){if(q[2]==="tf")return [{t:"True",ok:q[5]===true},{t:"False",ok:q[5]===false}];return shuffle(q[4].map((t,i)=>({t,ok:i===q[5]})));}
 function renderQ(){const id=Q.list[Q.i];const {q,ch}=QBY[id];currentCh=ch;const opts=qOptions(q);Q.cur={id,opts,q};Q.answered=false;const n=Q.list.length;
  const head=Q.mode==="test"?`Practice test · Chapter ${ch.num}: ${ch.title}`:Q.mode==="review"?`Review · from Chapter ${ch.num}`:Q.mode==="retry"?`Fix my gaps · Chapter ${ch.num}`:`Chapter ${ch.num} quiz`;
@@ -1344,7 +1391,7 @@ function renderQ(){const id=Q.list[Q.i];const {q,ch}=QBY[id];currentCh=ch;const 
  $("#idkBtn").onclick=()=>answerQ(-1);}
 function answerQ(i){if(Q.answered)return;Q.answered=true;const {opts,q,id}=Q.cur;const ok=i>=0&&opts[i].ok;const right=opts.findIndex(o=>o.ok);
  document.querySelectorAll("[data-qi]").forEach((b,n)=>{b.disabled=true;if(n===right)b.classList.add("right");else if(n===i)b.classList.add("wrong");});$("#hintBtn").disabled=true;$("#idkBtn").disabled=true;
- Q.res.push({id,ok,skipped:i<0});const last=Q.i===Q.list.length-1;const why=q[6]||"";const g=G[q[7]];
+ Q.res.push({id,ok,skipped:i<0});logAct(1);const last=Q.i===Q.list.length-1;const why=q[6]||"";const g=G[q[7]];
  $("#fb").innerHTML=`<div class="fb ${ok?"ok":"no"}" style="margin-top:.8rem"><b>${ok?"✅ Correct!":i<0?"That's okay. Now you know:":"❌ Not quite."}</b>${ok?"":` The answer is <b>${esc(opts[right].t)}</b>.`}<p style="margin:.4rem 0 0">${esc(why)}</p>${g?`<p class="small" style="margin:.4rem 0 0">Key word: <button class="term" data-term="${q[7]}">${esc(g[0])}</button></p>`:""}</div><div class="row" style="margin-top:.8rem"><button class="btn big" id="nextQ">${last?"See my results →":"Next question →"}</button></div>`;
  $("#nextQ").focus();$("#nextQ").onclick=()=>{if(last)renderResults();else{Q.i++;renderQ();}};}
 function renderResults(){const total=Q.res.length;const right=Q.res.filter(r=>r.ok).length;const pct=Math.round(right/total*100);const missed=Q.res.filter(r=>!r.ok).map(r=>r.id);
@@ -1417,12 +1464,14 @@ function renderOptions(){currentCh=null;const s=S.settings;
  <p class="small muted">Word translations are a helper. If a translation looks wrong, trust the English meaning and ask your teacher.</p></div>
  <div class="card"><h2>Text size</h2><div class="seg" role="group" aria-label="Text size">${[["m","Normal"],["l","Large"],["xl","Extra large"]].map(([k,l])=>`<button data-size="${k}" aria-pressed="${s.size===k}">${l}</button>`).join("")}</div></div>
  <div class="card"><h2>Reading speed (🔊 Listen)</h2>${canSpeak?`<div class="seg" role="group" aria-label="Reading speed">${[[0.7,"Slow"],[0.9,"Normal"],[1.05,"Fast"]].map(([k,l])=>`<button data-rate="${k}" aria-pressed="${s.rate===k}">${l}</button>`).join("")}</div> <button class="listen" data-say="Cells are the smallest units of life.">🔊 Test</button>`:`<p class="muted">Your browser does not support reading aloud.</p>`}</div>
+ <div class="card"><h2>Daily goal</h2><p class="muted">How many answers do you want to do each day?</p><div class="seg" role="group" aria-label="Daily goal">${[5,10,20,40].map(k=>`<button data-goal="${k}" aria-pressed="${(s.goal||10)===k}">${k}</button>`).join("")}</div></div>
  <div class="card"><h2>Lessons</h2><label class="row"><input type="checkbox" id="optDet" ${s.detail?"checked":""}> Always show "More detail"</label></div>
  <div class="card"><h2>Progress</h2><p class="muted">Your progress is saved in this browser only. It does not go to other devices.</p><button class="btn plain" id="resetBtn">Reset all progress</button><div id="resetBox"></div></div>`,"options");
  app.querySelectorAll('input[name=lang]').forEach(r=>r.onchange=()=>{s.lang=r.value;save();$("#otherBox").style.display=s.lang==="other"?"":"none";toast("Saved.");});
  const ol=$("#otherLang");ol.oninput=()=>{s.other=ol.value.replace(/[^\p{L}\s\-()]/gu,"").slice(0,30);save();};
  app.querySelectorAll("[data-size]").forEach(b=>b.onclick=()=>{s.size=b.dataset.size;save();applySize();renderOptions();});
  app.querySelectorAll("[data-rate]").forEach(b=>b.onclick=()=>{s.rate=+b.dataset.rate;save();renderOptions();});
+ app.querySelectorAll("[data-goal]").forEach(b=>b.onclick=()=>{s.goal=+b.dataset.goal;save();renderOptions();toast("Saved.");});
  $("#optDet").onchange=e=>{s.detail=e.target.checked;save();};
  $("#resetBtn").onclick=()=>{$("#resetBox").innerHTML=`<div class="confirm">Delete all scores, reviews, and settings? This cannot be undone.<div class="row" style="margin-top:.5rem"><button class="btn" id="resetYes" style="background:var(--coral);border-color:var(--coral)">Yes, reset</button><button class="btn plain" id="resetNo">Cancel</button></div></div>`;$("#resetYes").onclick=()=>{S=defaultState();save();applySize();toast("Progress reset.");location.hash="#home";};$("#resetNo").onclick=()=>$("#resetBox").innerHTML="";};}
 function applySize(){document.documentElement.classList.remove("size-l","size-xl");if(S.settings.size!=="m")document.documentElement.classList.add("size-"+S.settings.size);}
@@ -1441,6 +1490,7 @@ function renderAbout(){currentCh=null;show(`<h1>About CellWise</h1>
  <li><b>Fix my gaps as many times as needed,</b> always only on the missed ideas.</li>
  <li><b>Spaced, mixed review.</b> Questions come back after 1 to 30 days, mixed across chapters.</li>
  <li><b>Up-to-date sources.</b> Content follows the OpenStax books <i>Biology 2e</i>, <i>Anatomy and Physiology 2e</i>, and <i>Microbiology</i> (all CC BY 4.0), free textbooks used in many college courses.</li>
+ <li><b>Things to do, not just read.</b> Label and trace diagrams of the cell, heart, lungs, digestive tract, and urinary system, patient cases, feedback-loop sliders, a clickable body map, a word matching game, and a daily goal with a streak.</li>
  <li><b>Nursing links and TEAS practice.</b> Lessons show why each idea matters to a nurse, and a mixed practice test pulls from every chapter.</li></ul></div>
  <div class="card"><h2>How the AI Tutor stays safe</h2><p>The Tutor has three roles, like Study Buddy: a Tutor that explains, a Question Writer that makes new practice questions, and a Reviewer that checks each new question. Plain code (not AI) controls them.</p><ul>
  <li><b>Rules:</b> each AI role only talks about this lesson, uses simple English, and treats the student's text as data, not as instructions.</li>
@@ -1539,13 +1589,322 @@ document.addEventListener("click",e=>{
  if(pop&&!e.target.closest(".pop"))closePop();
  const sb=e.target.closest("[data-say]");if(sb){speak(sb.dataset.say,sb);return;}
  const qb=e.target.closest("[data-qi]");if(qb&&Q){answerQ(+qb.dataset.qi);return;}
- const cb=e.target.closest(".check .opt");if(cb){const box=cb.closest(".check");if(box.dataset.done)return;box.dataset.done="1";const a=+box.dataset.chk;const pick=+cb.dataset.i;box.querySelectorAll(".opt").forEach(o=>{o.disabled=true;if(+o.dataset.i===a)o.classList.add("right");else if(o===cb)o.classList.add("wrong");});const slot=box.querySelector(".fb-slot");slot.innerHTML=`<div class="fb ${pick===a?"ok":"no"}"><b>${pick===a?"✅ Yes!":"❌ Not quite."}</b> ${esc(slot.dataset.why)}</div>`;return;}
+ const cb=e.target.closest(".check .opt");if(cb){const box=cb.closest(".check");if(box.dataset.done)return;box.dataset.done="1";logAct(1);const a=+box.dataset.chk;const pick=+cb.dataset.i;box.querySelectorAll(".opt").forEach(o=>{o.disabled=true;if(+o.dataset.i===a)o.classList.add("right");else if(o===cb)o.classList.add("wrong");});const slot=box.querySelector(".fb-slot");slot.innerHTML=`<div class="fb ${pick===a?"ok":"no"}"><b>${pick===a?"✅ Yes!":"❌ Not quite."}</b> ${esc(slot.dataset.why)}</div>`;return;}
  const ex=e.target.closest("[data-explain]");if(ex){const [cid,sid]=ex.dataset.explain.split("/");const c=CH_BY[cid];const sec=c.sections.find(s=>s.id===sid);currentCh=c;openDrawer();if(!AI.fn){msgs.push({role:"sys",text:"The AI Tutor is not available here. Try reading the 'More detail' part of the lesson."});drawDrawer();return;}runTutor(`The student did not understand the part "${sec.h}". Explain it in a different way from the lesson, with a simple everyday comparison, in 4 to 6 short sentences.`,"",`Explain "${sec.h}" another way.`);}
 });
+/* ============================================================
+   INTERACTIVE DIAGRAMS: "Label it" and "Trace the path"
+   Each part: id, name, term (glossary id), shape (SVG), marker x/y,
+   label position lx/ly with anchor a ("start" | "middle" | "end"),
+   hit:false = the shape itself is not clickable (use the marker),
+   wrong = special message when clicked out of order in trace mode.
+   ============================================================ */
+const BLUE_F="#C9DBF3",BLUE_S="#1D6FD1",RED_F="#F6C4B8",RED_S="#C2410C";
+const hitPath=(d,w)=>`<path d="${d}" stroke="transparent" stroke-width="${w||16}" fill="none"/>`;
+const DIAG={
+cell:{title:"Label the animal cell",ch:"c6",vb:"0 0 460 310",
+ base:`<ellipse cx="230" cy="155" rx="215" ry="140" fill="#FFF4E5" stroke="#0F766E" stroke-width="5"/>`,
+ cap:"A simple drawing of an animal cell. It is not to scale.",
+ parts:[
+ {id:"membrane",name:"Cell membrane",term:"membrane",shape:"",hit:false,x:120,y:35,lx:136,ly:39,a:"start"},
+ {id:"nucleus",name:"Nucleus",term:"nucleus",shape:`<circle cx="200" cy="150" r="52" fill="#EFE9FB" stroke="#6D28D9" stroke-width="3"/>`,x:180,y:172,lx:180,ly:194,a:"middle"},
+ {id:"nucleolus",name:"Nucleolus",term:"organelle-nucleus",shape:`<circle cx="210" cy="138" r="15" fill="#C9B8F2"/>`,x:210,y:138,lx:210,ly:118,a:"middle"},
+ {id:"rer",name:"Rough ER",term:"er",shape:`<g stroke="#0F766E" stroke-width="4" fill="none"><path d="M265 95 C290 125 290 175 265 205"/><path d="M280 95 C305 125 305 175 280 205"/><path d="M295 95 C320 125 320 175 295 205"/></g><g fill="#C2410C"><circle cx="276" cy="112" r="2.5"/><circle cx="285" cy="135" r="2.5"/><circle cx="286" cy="165" r="2.5"/><circle cx="301" cy="120" r="2.5"/><circle cx="302" cy="180" r="2.5"/><circle cx="315" cy="150" r="2.5"/></g>${hitPath("M280 95 C305 125 305 175 280 205",40)}`,x:291,y:150,lx:326,ly:154,a:"start"},
+ {id:"ser",name:"Smooth ER",term:"er",shape:`<g stroke="#2E7D32" stroke-width="5" fill="none"><path d="M90 232 q15 -12 30 0 t30 0 t30 0"/><path d="M95 252 q15 -12 30 0 t30 0"/></g>${hitPath("M90 240 H180",34)}`,x:135,y:242,lx:135,ly:278,a:"middle"},
+ {id:"golgi",name:"Golgi apparatus",term:"golgi",shape:`<g stroke="#9A4B00" stroke-width="5" fill="none" stroke-linecap="round"><path d="M330 200 q30 -18 60 0"/><path d="M330 212 q30 -18 60 0"/><path d="M334 224 q26 -16 52 0"/></g>${hitPath("M330 210 H390",34)}`,x:360,y:210,lx:360,ly:250,a:"middle"},
+ {id:"vesicle",name:"Vesicle",term:"vesicle",shape:`<circle cx="408" cy="186" r="7" fill="#FFF4E5" stroke="#9A4B00" stroke-width="2"/><circle cx="396" cy="168" r="6" fill="#FFF4E5" stroke="#9A4B00" stroke-width="2"/>`,x:402,y:178,lx:402,ly:160,a:"middle"},
+ {id:"mito",name:"Mitochondrion",term:"mitochondria",shape:`<ellipse cx="115" cy="120" rx="38" ry="18" fill="#FDEDE4" stroke="#C2410C" stroke-width="3"/><path d="M85 120 q8 -12 15 0 t15 0 t15 0 t15 0" stroke="#C2410C" stroke-width="2" fill="none"/><ellipse cx="345" cy="75" rx="28" ry="13" fill="#FDEDE4" stroke="#C2410C" stroke-width="3"/><path d="M323 75 q6 -9 11 0 t11 0 t11 0 t11 0" stroke="#C2410C" stroke-width="2" fill="none"/>`,x:115,y:120,lx:115,ly:152,a:"middle"},
+ {id:"lyso",name:"Lysosome",term:"lysosome",shape:`<circle cx="260" cy="262" r="12" fill="#FDEDE4" stroke="#C2410C" stroke-width="2"/><g fill="#C2410C"><circle cx="256" cy="259" r="2"/><circle cx="264" cy="265" r="2"/><circle cx="262" cy="257" r="1.6"/></g>`,x:260,y:262,lx:276,ly:266,a:"start"},
+ {id:"ribo",name:"Ribosome",term:"ribosome",shape:`<g fill="#C2410C"><circle cx="205" cy="225" r="3"/><circle cx="215" cy="233" r="3"/><circle cx="200" cy="238" r="3"/></g>`,x:208,y:232,lx:208,ly:257,a:"middle"},
+ {id:"cyto",name:"Cytoplasm",term:"cytoplasm",shape:"",hit:false,x:395,y:125,lx:395,ly:108,a:"middle"}
+ ]},
+heart:{title:"The heart: label it, then trace the blood",ch:"c18",vb:"0 0 460 400",
+ base:`<rect x="160" y="330" width="140" height="44" rx="12" fill="#F1EEE8" stroke="#52606A" stroke-width="2"/><text x="230" y="357" text-anchor="middle" font-size="14" font-weight="700" fill="#52606A">Body</text><text x="230" y="396" text-anchor="middle" font-size="12" fill="#52606A">Blue = low-oxygen blood · Red = oxygen-rich blood</text>`,
+ cap:"A simple map of the heart, not a real picture. As in medical drawings, the patient's right side is on your left.",
+ parts:[
+ {id:"vc",name:"Vena cava",term:"",shape:`<path d="M160 352 H40 V150 H70" stroke="${BLUE_S}" stroke-width="16" fill="none"/><path d="M160 352 H40 V150 H70" stroke="${BLUE_F}" stroke-width="9" fill="none"/>`,x:100,y:352,lx:100,ly:336,a:"middle"},
+ {id:"ra",name:"Right atrium",term:"atrium",shape:`<rect x="70" y="110" width="130" height="85" rx="14" fill="${BLUE_F}" stroke="${BLUE_S}" stroke-width="3"/>`,x:135,y:138,lx:135,ly:172,a:"middle"},
+ {id:"tri",name:"Tricuspid valve",term:"heart-valve",shape:`<rect x="105" y="193" width="60" height="14" rx="4" fill="#fff" stroke="#52606A" stroke-width="2"/>`,x:135,y:200,lx:152,ly:204,a:"start"},
+ {id:"rv",name:"Right ventricle",term:"ventricle",shape:`<rect x="70" y="205" width="130" height="105" rx="14" fill="${BLUE_F}" stroke="${BLUE_S}" stroke-width="3"/>`,x:135,y:245,lx:135,ly:282,a:"middle"},
+ {id:"pv",name:"Pulmonary valve",term:"heart-valve",shape:`<rect x="202" y="228" width="9" height="14" rx="2" fill="#fff" stroke="#52606A" stroke-width="2"/>`,x:206,y:235,lx:194,ly:226,a:"end"},
+ {id:"pa",name:"Pulmonary artery",term:"",shape:`<path d="M211 235 H218 V54" stroke="${BLUE_S}" stroke-width="13" fill="none"/><path d="M211 235 H218 V54" stroke="${BLUE_F}" stroke-width="7" fill="none"/>`,x:218,y:90,lx:205,ly:94,a:"end"},
+ {id:"lungs",name:"Lungs",term:"",shape:`<rect x="150" y="8" width="160" height="46" rx="23" fill="#E5F3E6" stroke="#2E7D32" stroke-width="3"/>`,x:230,y:31,lx:246,ly:35,a:"start"},
+ {id:"pvn",name:"Pulmonary veins",term:"",shape:`<path d="M245 54 V150 H260" stroke="${RED_S}" stroke-width="13" fill="none"/><path d="M245 54 V150 H260" stroke="${RED_F}" stroke-width="7" fill="none"/>`,x:245,y:110,lx:258,ly:102,a:"start"},
+ {id:"la",name:"Left atrium",term:"atrium",shape:`<rect x="260" y="110" width="130" height="85" rx="14" fill="${RED_F}" stroke="${RED_S}" stroke-width="3"/>`,x:325,y:138,lx:325,ly:172,a:"middle"},
+ {id:"mit",name:"Mitral valve",term:"heart-valve",shape:`<rect x="295" y="193" width="60" height="14" rx="4" fill="#fff" stroke="#52606A" stroke-width="2"/>`,x:325,y:200,lx:342,ly:204,a:"start"},
+ {id:"lv",name:"Left ventricle",term:"ventricle",shape:`<rect x="260" y="205" width="130" height="105" rx="14" fill="${RED_F}" stroke="${RED_S}" stroke-width="7"/>`,x:325,y:250,lx:325,ly:287,a:"middle"},
+ {id:"av",name:"Aortic valve",term:"heart-valve",shape:`<rect x="391" y="248" width="9" height="14" rx="2" fill="#fff" stroke="#52606A" stroke-width="2"/>`,x:396,y:255,lx:388,ly:232,a:"end"},
+ {id:"ao",name:"Aorta",term:"aorta",shape:`<path d="M400 255 H425 V352 H300" stroke="${RED_S}" stroke-width="16" fill="none"/><path d="M400 255 H425 V352 H300" stroke="${RED_F}" stroke-width="9" fill="none"/>`,x:360,y:352,lx:360,ly:336,a:"middle"}
+ ],
+ trace:{noun:"blood",intro:"Tap the parts in the order blood flows. Start where blood comes back from the body.",steps:[
+ ["vc","Blood from the body comes back through the vena cava."],["ra","It enters the right atrium."],["tri","It passes through the tricuspid valve."],["rv","It fills the right ventricle."],["pv","The right ventricle pumps it through the pulmonary valve."],["pa","The pulmonary artery carries it to the lungs."],["lungs","In the lungs, blood picks up oxygen and drops off carbon dioxide."],["pvn","Oxygen-rich blood returns through the pulmonary veins."],["la","It enters the left atrium."],["mit","It passes through the mitral (bicuspid) valve."],["lv","It fills the left ventricle, the strongest chamber."],["av","The left ventricle pumps it through the aortic valve."],["ao","The aorta carries it out to the whole body."]]}},
+lungs:{title:"The respiratory system: label it, then trace the air",ch:"c19",vb:"0 0 360 400",base:"",
+ cap:"A simple drawing of the airways, not to scale.",
+ parts:[
+ {id:"lung",name:"Lungs",term:"",shape:`<g fill="#F6D5CF" stroke="${RED_S}" stroke-width="3"><path d="M165 200 C120 190 60 230 55 300 C52 350 90 365 165 350 Z"/><path d="M195 200 C240 190 300 230 305 300 C308 350 270 365 195 350 Z"/></g>`,x:75,y:300,lx:60,ly:304,a:"end",wrong:"Yes, air goes into the lungs, but inside them it travels through smaller tubes. Pick the next tube."},
+ {id:"nasal",name:"Nasal cavity",term:"",shape:`<ellipse cx="180" cy="35" rx="45" ry="20" fill="#FDEDE4" stroke="${RED_S}" stroke-width="3"/>`,x:180,y:35,lx:232,ly:39,a:"start"},
+ {id:"phar",name:"Pharynx",term:"",shape:`<rect x="170" y="55" width="20" height="52" fill="#FDEDE4" stroke="${RED_S}" stroke-width="3"/>`,x:180,y:80,lx:198,ly:84,a:"start"},
+ {id:"lar",name:"Larynx",term:"",shape:`<rect x="165" y="108" width="30" height="26" rx="6" fill="#EFE9FB" stroke="#6D28D9" stroke-width="3"/>`,x:180,y:121,lx:160,ly:125,a:"end"},
+ {id:"epi",name:"Epiglottis",term:"epiglottis",shape:`<path d="M192 104 q16 -4 20 10" stroke="#6D28D9" stroke-width="5" fill="none" stroke-linecap="round"/>${hitPath("M192 104 q16 -4 20 10",20)}`,x:222,y:110,lx:236,ly:114,a:"start",wrong:"The epiglottis is a flap. It covers the larynx when you swallow. Air goes past it, into the larynx."},
+ {id:"tra",name:"Trachea",term:"trachea",shape:`<rect x="172" y="134" width="16" height="66" fill="#E3F2EF" stroke="#0F766E" stroke-width="3"/><g stroke="#0F766E" stroke-width="2"><line x1="172" y1="148" x2="188" y2="148"/><line x1="172" y1="162" x2="188" y2="162"/><line x1="172" y1="176" x2="188" y2="176"/><line x1="172" y1="190" x2="188" y2="190"/></g>`,x:180,y:167,lx:164,ly:171,a:"end"},
+ {id:"bron",name:"Bronchus",term:"",shape:`<path d="M180 200 L135 240 M180 200 L225 240" stroke="#0F766E" stroke-width="8" fill="none" stroke-linecap="round"/>${hitPath("M180 200 L135 240 M180 200 L225 240",20)}`,x:206,y:222,lx:220,ly:214,a:"start"},
+ {id:"bronchi",name:"Bronchioles",term:"",shape:`<path d="M135 240 L110 270 M135 240 L140 282 M110 270 L95 292 M110 270 L118 302 M140 282 L132 310 M140 282 L155 305 M225 240 L250 270 M225 240 L220 282 M250 270 L262 296 M250 270 L240 302 M220 282 L228 312 M220 282 L205 305" stroke="#0F766E" stroke-width="3" fill="none" stroke-linecap="round"/>${hitPath("M135 240 L110 270 M135 240 L140 282 M225 240 L250 270 M225 240 L220 282",16)}`,x:112,y:272,lx:112,ly:252,a:"end"},
+ {id:"alv",name:"Alveoli",term:"alveoli",shape:`<g fill="#fff" stroke="${RED_S}" stroke-width="2"><circle cx="264" cy="300" r="6"/><circle cx="275" cy="294" r="6"/><circle cx="272" cy="307" r="6"/><circle cx="260" cy="312" r="6"/></g>`,x:268,y:302,lx:284,ly:318,a:"start"},
+ {id:"dia",name:"Diaphragm",term:"",shape:`<path d="M40 385 Q180 340 320 385" stroke="#9A4B00" stroke-width="6" fill="none"/>${hitPath("M40 385 Q180 340 320 385",18)}`,x:180,y:363,lx:180,ly:394,a:"middle",wrong:"The diaphragm is a muscle under the lungs. It helps you breathe, but air does not pass through it."}
+ ],
+ trace:{noun:"air",intro:"Tap the parts in the order air travels when you breathe in. Start where air enters.",steps:[
+ ["nasal","Air enters the nose. The nasal cavity warms, cleans, and moistens it."],["phar","It passes through the pharynx (throat)."],["lar","It goes through the larynx (voice box)."],["tra","It moves down the trachea (windpipe)."],["bron","The trachea splits into two bronchi, one for each lung."],["bronchi","Each bronchus branches into smaller bronchioles."],["alv","Air reaches the alveoli. Here oxygen diffuses into the blood."]]}},
+gut:{title:"The digestive system: label it, then trace the food",ch:"c20",vb:"-20 0 380 440",base:"",
+ cap:"A simple drawing, not to scale. The patient's right side is on your left.",
+ parts:[
+ {id:"liver",name:"Liver",term:"liver",shape:`<path d="M70 160 Q150 140 205 175 Q180 215 90 215 Q65 200 70 160 Z" fill="#D9A47E" stroke="#9A4B00" stroke-width="3"/>`,x:118,y:182,lx:118,ly:203,a:"middle",wrong:"Food does not pass through the liver. It is a helper organ. It makes bile."},
+ {id:"gall",name:"Gallbladder",term:"",shape:`<ellipse cx="150" cy="220" rx="10" ry="14" fill="#A7D7A0" stroke="#2E7D32" stroke-width="3"/>`,x:150,y:222,lx:134,ly:240,a:"end",wrong:"Food does not pass through the gallbladder. It is a helper organ that stores bile."},
+ {id:"stom",name:"Stomach",term:"",shape:`<ellipse cx="240" cy="200" rx="48" ry="30" transform="rotate(-20 240 200)" fill="#F4C7A1" stroke="${RED_S}" stroke-width="3"/>`,x:245,y:200,lx:292,ly:186,a:"start"},
+ {id:"panc",name:"Pancreas",term:"",shape:`<ellipse cx="225" cy="248" rx="42" ry="9" fill="#F4E1A6" stroke="#9A4B00" stroke-width="3"/>`,x:252,y:248,lx:272,ly:252,a:"start",wrong:"Food does not pass through the pancreas. It is a helper organ that sends enzymes and bicarbonate."},
+ {id:"mouth",name:"Mouth",term:"",shape:`<ellipse cx="180" cy="30" rx="30" ry="14" fill="#FDEDE4" stroke="${RED_S}" stroke-width="3"/>`,x:180,y:30,lx:218,ly:34,a:"start"},
+ {id:"phar",name:"Pharynx",term:"",shape:`<rect x="172" y="44" width="16" height="26" fill="#FDEDE4" stroke="${RED_S}" stroke-width="3"/>`,x:180,y:57,lx:196,ly:61,a:"start"},
+ {id:"eso",name:"Esophagus",term:"",shape:`<path d="M180 70 V160 Q182 175 205 180" stroke="${RED_S}" stroke-width="12" fill="none"/><path d="M180 70 V160 Q182 175 205 180" stroke="#FDEDE4" stroke-width="6" fill="none"/>`,x:180,y:115,lx:194,ly:119,a:"start"},
+ {id:"large",name:"Large intestine",term:"",shape:`<path d="M105 380 V280 Q105 265 120 265 H240 Q255 265 255 280 V370 Q255 395 205 395 Q185 397 182 405 V416" stroke="#9A4B00" stroke-width="16" fill="none"/><path d="M105 380 V280 Q105 265 120 265 H240 Q255 265 255 280 V370 Q255 395 205 395 Q185 397 182 405 V416" stroke="#F4E1A6" stroke-width="9" fill="none"/>`,x:105,y:320,lx:90,ly:324,a:"end"},
+ {id:"small",name:"Small intestine",term:"small-intestine",shape:`<path d="M140 292 q15 15 30 0 t30 0 t30 0 V316 q-15 15 -30 0 t-30 0 t-30 0 V340 q15 15 30 0 t30 0 t30 0" stroke="${RED_S}" stroke-width="7" fill="none" stroke-linejoin="round"/>${hitPath("M140 316 H230",60)}`,x:185,y:318,lx:185,ly:372,a:"middle"},
+ {id:"anus",name:"Anus",term:"",shape:`<circle cx="182" cy="424" r="6" fill="#52606A"/>`,x:182,y:424,lx:198,ly:428,a:"start"}
+ ],
+ trace:{noun:"food",intro:"Tap the parts in the order food travels. Start where food goes in.",steps:[
+ ["mouth","Food enters the mouth. Teeth and saliva start digestion."],["phar","It is swallowed into the pharynx."],["eso","Peristalsis pushes it down the esophagus."],["stom","The stomach mixes it with acid and enzymes."],["small","In the small intestine, most digestion and absorption happen."],["large","The large intestine absorbs water. Waste moves to the rectum."],["anus","Waste leaves the body through the anus."]]}},
+urinary:{title:"The urinary system: label it, then trace the urine",ch:"c21",vb:"0 0 360 380",base:"",
+ cap:"A simple front view, not to scale. The patient's right side is on your left.",
+ parts:[
+ {id:"ra",name:"Renal artery",term:"",shape:`<path d="M190 110 H112 M190 110 H248" stroke="${RED_S}" stroke-width="6"/>`,x:222,y:110,lx:222,ly:97,a:"middle",wrong:"The renal artery brings blood to the kidney. Urine is not in it."},
+ {id:"rvn",name:"Renal vein",term:"",shape:`<path d="M172 132 H112 M172 132 H248" stroke="${BLUE_S}" stroke-width="6"/>`,x:140,y:132,lx:140,ly:152,a:"middle",wrong:"The renal vein carries cleaned blood back toward the heart. Urine is not in it."},
+ {id:"ivc",name:"Inferior vena cava",term:"",shape:`<rect x="165" y="20" width="14" height="250" rx="5" fill="${BLUE_F}" stroke="${BLUE_S}" stroke-width="2"/>`,x:172,y:42,lx:158,ly:46,a:"end",wrong:"This is a large vein. It carries blood, not urine."},
+ {id:"ao",name:"Aorta",term:"aorta",shape:`<rect x="183" y="20" width="14" height="250" rx="5" fill="${RED_F}" stroke="${RED_S}" stroke-width="2"/>`,x:190,y:240,lx:204,ly:244,a:"start",wrong:"This is the largest artery. It carries blood, not urine."},
+ {id:"kid",name:"Kidney",term:"",shape:`<g fill="#E8A49A" stroke="#9A3B2B" stroke-width="3"><path d="M95 75 C55 75 50 165 95 168 C118 170 122 145 112 122 C104 104 120 78 95 75 Z"/><path d="M265 75 C305 75 310 165 265 168 C242 170 238 145 248 122 C256 104 240 78 265 75 Z"/></g>`,x:82,y:120,lx:82,ly:66,a:"middle"},
+ {id:"ure",name:"Ureter",term:"ureter",shape:`<path d="M110 150 C120 200 150 240 165 285 M250 150 C240 200 210 240 195 285" stroke="#E08A3C" stroke-width="6" fill="none"/>${hitPath("M110 150 C120 200 150 240 165 285 M250 150 C240 200 210 240 195 285",18)}`,x:128,y:205,lx:114,ly:209,a:"end"},
+ {id:"blad",name:"Urinary bladder",term:"bladder",shape:`<path d="M150 280 Q180 270 210 280 Q225 320 180 330 Q135 320 150 280 Z" fill="#FFF4E5" stroke="#9A4B00" stroke-width="3"/>`,x:180,y:304,lx:222,ly:308,a:"start"},
+ {id:"ureth",name:"Urethra",term:"urethra",shape:`<rect x="176" y="330" width="8" height="38" rx="3" fill="#E08A3C"/>`,x:180,y:352,lx:196,ly:356,a:"start"}
+ ],
+ trace:{noun:"urine",intro:"Tap the parts in the order urine travels. Start where urine is made.",steps:[
+ ["kid","The kidneys filter the blood and make urine."],["ure","The ureters carry urine down to the bladder."],["blad","The bladder stores urine."],["ureth","The urethra carries urine out of the body."]]}}
+};
+const DG_AT={c6:"s4",c18:"s3",c19:"s1",c20:"s1",c21:"s2"};
+
+function dgBlock(key){const d=DIAG[key];if(!d)return "";
+ return `<div class="viz dg" data-dg="${key}"><div class="row" style="justify-content:space-between;margin-bottom:.4rem"><b>${esc(d.title)}</b>${d.trace?`<div class="seg" role="group" aria-label="Diagram mode"><button data-dgmode="label" aria-pressed="true">Label it</button><button data-dgmode="trace" aria-pressed="false">Trace the path</button></div>`:""}</div><div class="dg-svg"></div><p class="dg-msg" aria-live="polite"></p><div class="dg-ui"></div><p class="cap muted">${esc(d.cap)}</p></div>`;}
+
+function initDg(){document.querySelectorAll(".dg").forEach(box=>{if(box.dataset.ready)return;box.dataset.ready="1";
+ const d=DIAG[box.dataset.dg];const P={};d.parts.forEach((p,i)=>{p.n=i+1;P[p.id]=p;});
+ const st={mode:"label",placed:new Set(),sel:null,miss:0,chips:shuffle(d.parts.map(p=>p.id)),step:0,tmiss:0};
+ const msg=(t,ok)=>{const m=box.querySelector(".dg-msg");m.className="dg-msg"+(ok===true?" ok":ok===false?" no":"");m.innerHTML=t;};
+ const meaning=p=>p.term&&G[p.term]?` <span class="small">${esc(G[p.term][1])}</span>`:"";
+ const svg=()=>{const lab=st.mode==="label";const doneT=new Set(d.trace?d.trace.steps.slice(0,st.step).map(s=>s[0]):[]);
+  const parts=d.parts.map(p=>`<g class="dg-part${!lab&&doneT.has(p.id)?" done":""}" ${p.hit===false?"":`data-p="${p.id}"`}>${p.shape}</g>`).join("");
+  const marks=d.parts.map(p=>{const ok=lab?st.placed.has(p.id):doneT.has(p.id);const num=lab?p.n:(ok?d.trace.steps.findIndex(s=>s[0]===p.id)+1:"");
+   const label=lab?(ok?p.name:"Spot "+p.n):p.name;
+   return `<g class="dg-mark${ok?" ok":""}${lab&&st.sel?" ready":""}" data-p="${p.id}" tabindex="0" role="button" aria-label="${esc(label)}"><circle cx="${p.x}" cy="${p.y}" r="${lab?11:8}"/><text x="${p.x}" y="${p.y+4}" text-anchor="middle" font-size="${lab?11:9}" font-weight="700">${num}</text></g>`;}).join("");
+  const names=d.parts.filter(p=>lab?st.placed.has(p.id):true).map(p=>`<text class="lbl" x="${p.lx}" y="${p.ly}" text-anchor="${p.a||"start"}">${esc(p.name)}</text>`).join("");
+  box.querySelector(".dg-svg").innerHTML=`<svg viewBox="${d.vb}" role="img" aria-label="${esc(d.title)}">${d.base}${parts}${names}${marks}</svg>`;};
+ const ui=()=>{const u=box.querySelector(".dg-ui");
+  if(st.mode==="label"){const left=st.chips.filter(id=>!st.placed.has(id));
+   u.innerHTML=left.length?`<div class="lab-chips">${left.map(id=>`<button class="lab-chip" data-chip="${id}" aria-pressed="${st.sel===id}">${esc(P[id].name)}</button>`).join("")}</div>`:`<button class="btn plain" data-dgact="again">↺ Try again</button>`;}
+  else{const done=d.trace.steps.slice(0,st.step);u.innerHTML=`${done.length?`<ol class="flow done">${done.map(s=>`<li>${esc(s[1])}</li>`).join("")}</ol>`:""}<button class="btn plain" data-dgact="again">↺ Start again</button>`;}};
+ const draw=()=>{svg();ui();box.querySelectorAll("[data-dgmode]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.dgmode===st.mode));};
+ const intro=()=>st.mode==="label"?"Pick a label below, then tap its numbered spot on the drawing.":esc(d.trace.intro);
+ const pick=id=>{const p=P[id];if(!p)return;
+  if(st.mode==="label"){
+   if(st.placed.has(id)){msg(`That is the <b>${esc(p.name)}</b>.`+meaning(p));return;}
+   if(!st.sel){msg("First pick a label below. Then tap a numbered spot.");return;}
+   if(st.sel===id){st.placed.add(id);st.sel=null;logAct(1);
+    if(st.placed.size===d.parts.length)msg(`🎉 All ${d.parts.length} labels are in place${st.miss?`, with ${st.miss} wrong tr${st.miss>1?"ies":"y"}`:" with no mistakes"}.`,true);
+    else msg(`✅ <b>${esc(p.name)}</b>.`+meaning(p),true);draw();}
+   else{st.miss++;msg(`Not there. Try another spot for <b>${esc(P[st.sel].name)}</b>.`,false);}
+   return;}
+  const steps=d.trace.steps;if(st.step>=steps.length){msg("You finished. Press Start again to try once more.");return;}
+  if(steps[st.step][0]===id){st.step++;logAct(1);
+   if(st.step===steps.length)msg(`🎉 You traced the whole path of the ${d.trace.noun}${st.tmiss?` with ${st.tmiss} wrong tr${st.tmiss>1?"ies":"y"}`:" with no mistakes"}.`,true);
+   else msg(`✅ ${esc(steps[st.step-1][1])}`,true);draw();}
+  else{st.tmiss++;const done=steps.slice(0,st.step).some(s=>s[0]===id);
+   msg(done?`You already passed the ${esc(p.name)}. Where does the ${d.trace.noun} go next?`:p.wrong?esc(p.wrong):st.step===0?`Not yet. ${esc(d.trace.intro)}`:`Not yet. The ${d.trace.noun} is in the ${esc(P[steps[st.step-1][0]].name.toLowerCase())}. Where does it go next?`,false);}};
+ box.addEventListener("click",e=>{const m=e.target.closest("[data-dgmode]");if(m){st.mode=m.dataset.dgmode;st.sel=null;draw();msg(intro());return;}
+  const c=e.target.closest("[data-chip]");if(c){st.sel=st.sel===c.dataset.chip?null:c.dataset.chip;draw();msg(st.sel?`Now tap the spot for <b>${esc(P[st.sel].name)}</b>.`:intro());return;}
+  const a=e.target.closest("[data-dgact]");if(a){if(st.mode==="label"){st.placed.clear();st.sel=null;st.miss=0;st.chips=shuffle(st.chips);}else{st.step=0;st.tmiss=0;}draw();msg(intro());return;}
+  const t=e.target.closest("[data-p]");if(t)pick(t.dataset.p);});
+ box.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.target.closest(".dg-mark")){e.preventDefault();pick(e.target.closest(".dg-mark").dataset.p);}});
+ draw();msg(intro());});}
+
+/* ============================================================
+   PATIENT CASES: [chapterId, story, question, options, answerIndex, why]
+   The first option is always the right one; options are shuffled on screen.
+   ============================================================ */
+const CASES=[
+["c3","Ms. Ortiz is getting an IV of normal saline (0.9% salt water). It has about the same solute concentration as her blood.","What happens to her red blood cells?",["They stay the same size","They swell and may burst","They shrink and wrinkle"],0,"Normal saline is isotonic to blood. Water moves in and out of the cells equally, so they keep their size."],
+["c3","A student nurse asks why pure water is never given straight into a vein.","What would pure water do to red blood cells?",["Water moves in, so the cells swell and can burst","Water moves out, so the cells shrink","Nothing happens to the cells"],0,"Pure water is hypotonic to red blood cells. Water moves into the cells by osmosis."],
+["c11","A nurse washes her hands before and after caring for each patient.","Which link in the chain of infection does hand washing mainly break?",["Mode of transmission","Susceptible host","Infectious agent"],0,"Germs often travel from person to person on hands. Clean hands stop the germ from traveling."],
+["c11","Mr. Brown has a cold caused by a virus. He asks for antibiotics.","What should the nurse explain?",["Antibiotics do not work on viruses","Antibiotics will cure the cold faster","He needs a stronger antibiotic"],0,"Antibiotics kill bacteria or stop them from growing. They do not work on viruses, and overusing them makes resistance more common."],
+["c12","A nurse writes that a patient has a cut on the wrist and a bruise on the elbow.","Compared to the elbow, the wrist is:",["Distal","Proximal","Medial"],0,"Distal means farther from the trunk. The wrist is farther from the trunk than the elbow."],
+["c12","After a long walk on a hot day, Mrs. Kim is sweating. Soon her temperature is back to normal.","What kind of control is this?",["Negative feedback","Positive feedback","No feedback"],0,"Her body sensed the heat and reversed the change by sweating. Reversing a change is negative feedback."],
+["c13","A child touched a hot pan. The skin is red and painful, with no blisters.","What kind of burn is this?",["Superficial (first-degree)","Partial-thickness (second-degree)","Full-thickness (third-degree)"],0,"A superficial burn affects only the epidermis. The skin is red and painful, like a sunburn, with no blisters."],
+["c13","A patient has a deep burn. He says the burned area does not hurt.","Why might it not hurt?",["The nerve endings are destroyed","The burn is very small","The epidermis is still whole"],0,"A full-thickness burn destroys the epidermis and the dermis, including the nerve endings."],
+["c14","A 10-year-old boy breaks his leg near the end of his femur. The doctor checks the growth plate.","Why does the growth plate matter?",["It lets the bone grow longer","It makes red blood cells","It connects muscle to bone"],0,"In children, the growth plate (epiphyseal plate) near each end of a long bone lets the bone grow longer."],
+["c14","A soccer player tore a ligament in her knee.","What does a ligament connect?",["Bone to bone","Muscle to bone","Skin to muscle"],0,"Ligaments connect bone to bone. Tendons connect muscle to bone."],
+["c15","Mr. Ali was in bed for six weeks after surgery. His leg muscles are now smaller and weaker.","What is this called?",["Atrophy","Hypertrophy","A reflex"],0,"Not using a muscle makes it smaller and weaker. This is atrophy."],
+["c16","A patient had a stroke that damaged the cerebellum.","Which problem is most likely?",["Trouble with balance and coordination","Trouble seeing colors","Trouble digesting food"],0,"The cerebellum controls balance and coordination."],
+["c16","A nurse taps just below a patient's kneecap, and the leg kicks right away.","Why can the leg move before the patient thinks about it?",["The reflex goes through the spinal cord","The cerebrum decides first","The heart sends the signal"],0,"Many reflexes go through the spinal cord without waiting for the brain. That makes them fast."],
+["c17","Ms. Patel has type 1 diabetes. Her pancreas does not make insulin.","Without insulin, what happens to her blood sugar after a meal?",["It stays high","It drops very low","It does not change"],0,"Insulin helps cells take in glucose. Without it, glucose stays in the blood."],
+["c18","Mr. Johnson's left ventricle is weak and does not pump well.","Where will blood have the most trouble going?",["Out to the body through the aorta","To the lungs through the pulmonary artery","Back from the body through the vena cava"],0,"The left ventricle pumps oxygen-rich blood into the aorta and out to the whole body."],
+["c19","Mr. Lee has pneumonia. Fluid fills many of his alveoli.","Why is the oxygen in his blood low?",["Less oxygen can diffuse from the alveoli into the blood","His trachea is too wide","His diaphragm has stopped"],0,"Gas exchange happens in the alveoli. When they fill with fluid, less oxygen can diffuse into the blood."],
+["c19","Mrs. Green coughs hard while eating. Some food went toward her airway.","Which flap should have covered the larynx when she swallowed?",["Epiglottis","Diaphragm","Bronchus"],0,"The epiglottis covers the larynx when you swallow, so food goes down the esophagus."],
+["c20","Ms. Rivera had her gallbladder removed. She is told to eat smaller meals with less fat for a while.","Why?",["The gallbladder stored bile, which breaks fat into small drops","Her stomach no longer makes acid","Her small intestine has no villi now"],0,"The liver still makes bile, but the gallbladder stored it and released more of it after fatty meals."],
+["c21","Mr. Davis is dehydrated. He makes only a little urine, and it is dark.","Which hormone is telling his kidneys to keep more water?",["ADH","Insulin","Calcitonin"],0,"ADH makes the collecting ducts take back more water. You make less urine, and it is darker."],
+["c21","A urine test shows glucose in the urine.","What can this be a sign of?",["Diabetes","A broken bone","A sunburn"],0,"Normal urine has no glucose. Glucose in urine can be a sign of diabetes."],
+["c22","A patient has a sore throat and swollen lymph nodes in the neck.","Why are the lymph nodes swollen?",["They are filtering germs and hold many white blood cells","They are making bile","They are storing urine"],0,"Lymph nodes filter lymph and hold many white blood cells. They can swell during an infection."],
+["c22","A newborn baby gets antibodies from breast milk.","What kind of immunity is this?",["Passive immunity","Active immunity","An autoimmune disease"],0,"Passive immunity means you receive antibodies made by someone else. It works fast but lasts only weeks to months."],
+["c23","A pregnant patient asks how her baby gets oxygen before birth.","What should the nurse say?",["Through the placenta","Through the baby's own lungs","Through the ovary"],0,"The placenta passes oxygen and nutrients from the mother to the fetus and removes the fetus's waste."]
+];
+function caseCard(i){const c=CASES[i];const ch=CH_BY[c[0]];const order=shuffle(c[3].map((_,k)=>k));
+ return `<div class="card case" data-case="${i}"><div class="ch-num">🩺 Patient case · Chapter ${ch.num}</div><p>${esc(c[1])}</p><div class="sec-head"><b>${esc(c[2])}</b>${listenBtn(c[1]+" "+c[2]+" "+order.map((k,n)=>"ABC"[n]+". "+c[3][k]).join(". "))}</div><div class="opts">${order.map((k,n)=>`<button class="opt" data-co="${k}"><span class="k">${"ABC"[n]}</span><span>${esc(c[3][k])}</span></button>`).join("")}</div><div class="fb-slot" aria-live="polite"></div></div>`;}
+function casesBlock(chId){const ids=CASES.map((c,i)=>c[0]===chId?i:-1).filter(i=>i>=0);if(!ids.length)return "";
+ return `<h2 style="margin-top:1.4rem">🩺 Think like a nurse</h2><p class="muted">Use what you learned to answer ${ids.length>1?"these short cases":"this short case"}.</p>${ids.map(caseCard).join("")}`;}
+document.addEventListener("click",e=>{const b=e.target.closest(".case [data-co]");if(!b)return;const box=b.closest(".case");if(box.dataset.done)return;box.dataset.done="1";
+ const c=CASES[+box.dataset.case];const pick=+b.dataset.co;const ok=pick===c[4];logAct(1);
+ box.querySelectorAll("[data-co]").forEach(o=>{o.disabled=true;if(+o.dataset.co===c[4])o.classList.add("right");else if(o===b)o.classList.add("wrong");});
+ box.querySelector(".fb-slot").innerHTML=`<div class="fb ${ok?"ok":"no"}"><b>${ok?"✅ Correct!":"❌ Not quite."}</b>${ok?"":` The answer is <b>${esc(c[3][c[4]])}</b>.`} ${esc(c[5])}</div>`;
+ const sc=$("#caseScore");if(sc){const all=[...document.querySelectorAll(".case[data-done]")];const right=all.filter(x=>x.querySelector(".opt.right.wrong")===null&&!x.querySelector(".opt.wrong")).length;sc.textContent=`${right} of ${all.length} correct so far`;}});
+
+/* ============================================================
+   FEEDBACK LOOP SLIDERS (homeostasis)
+   ============================================================ */
+const LOOPS={
+glucose:{title:"Blood sugar: try the feedback loop",min:40,max:250,step:1,lo:70,hi:110,set:90,start:180,unit:"mg/dL",
+ fmt:v=>`${Math.round(v)} mg/dL`,
+ note:"In this model, normal blood sugar is about 70 to 110 mg/dL. Your course may use slightly different numbers.",
+ high:[["Change","Blood sugar is high, for example after a meal."],["Sensor and control","Beta cells in the pancreas notice it."],["Effector","Beta cells release insulin. Body cells take in glucose, and the liver stores glucose as glycogen."],["Result","Blood sugar goes down to normal."]],
+ low:[["Change","Blood sugar is low, for example after many hours without food."],["Sensor and control","Alpha cells in the pancreas notice it."],["Effector","Alpha cells release glucagon. The liver breaks down glycogen and releases glucose."],["Result","Blood sugar goes up to normal."]],
+ ok:"Blood sugar is in the normal range. Move the slider to make it too high or too low."},
+temp:{title:"Body temperature: try the feedback loop",min:34,max:41,step:0.1,lo:36.5,hi:37.5,set:37,start:39,unit:"°C",
+ fmt:v=>`${v.toFixed(1)} °C (${(v*9/5+32).toFixed(1)} °F)`,
+ note:"Normal body temperature is around 37 °C (98.6 °F). In this model, normal is 36.5 to 37.5 °C.",
+ high:[["Change","Body temperature goes up, for example during exercise on a hot day."],["Sensors","Nerve endings in the skin and sensors in the brain notice it."],["Control center","The hypothalamus in the brain decides what to do."],["Effectors","Sweat glands make sweat. Blood vessels in the dermis get wider (vasodilation), so more heat leaves through the skin."],["Result","Body temperature goes down to normal."]],
+ low:[["Change","Body temperature goes down, for example on a very cold day."],["Sensors","Nerve endings in the skin and sensors in the brain notice it."],["Control center","The hypothalamus in the brain decides what to do."],["Effectors","Skeletal muscles shiver to make heat. Blood vessels in the dermis get narrower (vasoconstriction), so heat stays inside."],["Result","Body temperature goes up to normal."]],
+ ok:"Body temperature is normal. Move the slider to make it too hot or too cold."}};
+const LOOP_AT={c12:["s1","temp"],c13:["s4","temp"],c17:["s4","glucose"]};
+function loopBlock(kind){const L=LOOPS[kind];if(!L)return "";
+ return `<div class="viz loop" data-loop="${kind}"><b>${esc(L.title)}</b><div class="loop-gauge"></div>
+ <label class="small" style="display:block;margin-top:.3rem">Move the slider to change the value: <input type="range" min="${L.min}" max="${L.max}" step="${L.step}" value="${L.start}" aria-label="${kind==="glucose"?"Blood sugar":"Body temperature"}"></label>
+ <div class="row" style="margin:.5rem 0"><button class="btn" data-lact="go">▶ Let the body respond</button>${kind==="glucose"?`<label class="row small" style="gap:.3rem"><input type="checkbox" data-t1> Pancreas makes no insulin (type 1 diabetes)</label>`:""}</div>
+ <p class="cap loop-msg" aria-live="polite"></p><div class="loopsteps"></div><p class="small muted" style="margin:.5rem 0 0">${esc(L.note)}</p></div>`;}
+function initLoops(){document.querySelectorAll(".loop").forEach(box=>{if(box.dataset.ready)return;box.dataset.ready="1";const L=LOOPS[box.dataset.loop];
+ const rng=box.querySelector("input[type=range]");const t1=box.querySelector("[data-t1]");let v=+rng.value,timer=0;
+ const state=()=>v>L.hi?"high":v<L.lo?"low":"ok";
+ const gauge=()=>{const W=320,x=val=>10+(val-L.min)/(L.max-L.min)*(W-20);const s=state();
+  box.querySelector(".loop-gauge").innerHTML=`<svg viewBox="0 0 320 64" role="img" aria-label="Value ${esc(L.fmt(v))}, ${s==="ok"?"normal":s==="high"?"too high":"too low"}"><rect x="10" y="26" width="300" height="14" rx="7" fill="#EFEAE1"/><rect x="${x(L.lo)}" y="26" width="${x(L.hi)-x(L.lo)}" height="14" fill="#BFE3C3"/><text x="${(x(L.lo)+x(L.hi))/2}" y="56" text-anchor="middle" font-size="10" fill="#2E7D32">normal</text><path d="M${x(v)-7} 8 L${x(v)+7} 8 L${x(v)} 22 Z" fill="${s==="ok"?"#2E7D32":"#C2410C"}"/></svg><div class="row" style="justify-content:space-between"><b class="loop-val">${esc(L.fmt(v))}</b><span class="chip ${s==="ok"?"":"gold"}">${s==="ok"?"Normal":s==="high"?"Too high":"Too low"}</span></div>`;};
+ const steps=()=>{const s=state();const m=box.querySelector(".loop-msg");const ls=box.querySelector(".loopsteps");
+  if(s==="ok"){m.textContent=L.ok;ls.innerHTML="";return;}
+  let list=L[s];if(t1&&t1.checked&&s==="high")list=[list[0],list[1],["Effector","No insulin is released, so body cells cannot take in glucose well."],["Result","Blood sugar stays high. People with type 1 diabetes need insulin from outside the body."]];
+  m.textContent="The body notices the change and works to reverse it. This is negative feedback.";
+  ls.innerHTML=list.map(([h,t],i)=>`<div><b>${i+1}. ${esc(h)}</b>${esc(t)}</div>`).join("");};
+ const stop=()=>{clearInterval(timer);timer=0;box.querySelector("[data-lact]").disabled=false;};
+ const draw=()=>{rng.value=v;gauge();steps();};
+ rng.addEventListener("input",()=>{stop();v=+rng.value;draw();});if(t1)t1.addEventListener("change",draw);
+ box.querySelector("[data-lact]").addEventListener("click",()=>{if(timer)return;const s=state();if(s==="ok"){box.querySelector(".loop-msg").textContent=L.ok;return;}
+  if(t1&&t1.checked&&s==="high"){steps();box.querySelector(".loop-msg").textContent="Nothing brings blood sugar down. Without insulin, it stays high.";return;}
+  box.querySelector("[data-lact]").disabled=true;
+  timer=setInterval(()=>{v+= (L.set-v)*0.12;if(Math.abs(v-L.set)<L.step*2){v=L.set;stop();logAct(1);box.querySelector(".loop-msg").textContent="✅ Back to normal. The body reversed the change: negative feedback.";gauge();rng.value=v;return;}gauge();rng.value=v;},60);});
+ anims.push(stop);draw();});}
+
+/* ============================================================
+   STREAK AND DAILY GOAL (saved in this browser)
+   ============================================================ */
+function dayKey(d){d=d||new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function dayAct(k){const a=S.act&&S.act[k];return a&&(a.n>0||a.l>0);}
+function logAct(n,l){if(!S.act)S.act={};const k=dayKey();const a=S.act[k]||{n:0,l:0};const before=a.n;a.n+=n||0;a.l+=l||0;S.act[k]=a;
+ const cut=dayKey(new Date(Date.now()-90*DAY));Object.keys(S.act).forEach(x=>{if(x<cut)delete S.act[x];});save();
+ const g=S.settings.goal||10;if(before<g&&a.n>=g)toast(`🎯 Daily goal done: ${g} answers today!`);}
+function streakDays(){const d=new Date();if(!dayAct(dayKey(d)))d.setDate(d.getDate()-1);let n=0;while(dayAct(dayKey(d))){n++;d.setDate(d.getDate()-1);}return n;}
+function streakCard(){const g=S.settings.goal||10;const t=(S.act||{})[dayKey()]||{n:0,l:0};const n=streakDays();const days=[];
+ for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);days.push({on:dayAct(dayKey(d)),lab:d.toLocaleDateString(undefined,{weekday:"narrow"}),full:d.toLocaleDateString(undefined,{weekday:"long"}),today:i===0});}
+ return `<div class="card streak"><div class="row" style="justify-content:space-between"><h2 style="margin:0">${n?`🔥 ${n}-day streak`:"🔥 Start a streak today"}</h2><div class="days" aria-label="Last 7 days">${days.map(d=>`<span class="${d.on?"on":""}${d.today?" today":""}" title="${esc(d.full)}" aria-label="${esc(d.full)}: ${d.on?"studied":"no study"}">${esc(d.lab)}</span>`).join("")}</div></div>
+ <p style="margin:.6rem 0 .3rem">Today's goal: <b>${Math.min(t.n,g)} of ${g}</b> answers${t.l?` · ${t.l} lesson${t.l>1?"s":""} read`:""}</p><div class="bar"><i style="width:${Math.min(100,t.n/g*100)}%"></i></div>
+ <p class="small muted" style="margin:.4rem 0 0">Quiz answers, quick checks, cases, games, and diagrams all count. Study a little every day to keep your streak. <a href="#options">Change goal</a></p></div>`;}
+function markRead(id){const st=chState(id);if(!st.read){st.read=true;logAct(0,1);}save();}
+
+/* ============================================================
+   BODY MAP (home page)
+   ============================================================ */
+function bodyMapCard(){const R="#FFF4E5",O="#C9B9A3";
+ const reg=(ch,label,shapes,tx,ty,lx,ly,anchor)=>{const c=CH_BY[ch];return `<a href="#learn-${ch}" class="bm-link" aria-label="${esc(label)}: Chapter ${c.num}, ${esc(c.title)}"><title>${esc(label)}: Chapter ${c.num}</title><line x1="${lx}" y1="${ly}" x2="${tx}" y2="${ty}" class="bm-line"/><g class="rg">${shapes}</g><text x="${anchor==="end"?lx-4:lx+4}" y="${ly+4}" text-anchor="${anchor}" class="bm-txt">${esc(label)}</text></a>`;};
+ const body=`<g fill="${R}" stroke="${O}" stroke-width="3"><circle cx="220" cy="55" r="36"/><rect x="208" y="90" width="24" height="24"/><path d="M160 115 H280 Q300 118 302 140 L295 300 Q290 330 270 335 H170 Q150 330 145 300 L138 140 Q140 118 160 115 Z"/><path d="M160 120 Q128 125 122 150 L105 270 L124 276 L140 165"/><path d="M280 120 Q312 125 318 150 L335 270 L316 276 L300 165"/><path d="M175 335 L168 455 H203 L212 345"/><path d="M265 335 L272 455 H237 L228 345"/><circle cx="335" cy="292" r="13"/></g>`;
+ return `<div class="card"><h2>🧍 Tap the body to pick a chapter</h2><p class="muted" style="margin-top:0">Each part of the body opens its chapter.</p><div class="bodymap"><svg viewBox="-75 0 590 470" role="group" aria-label="Body map">${body}
+ ${reg("c16","🧠 Brain",`<circle cx="220" cy="52" r="26" fill="#EFE9FB" stroke="#6D28D9" stroke-width="2"/><path d="M200 52 q10 -12 20 0 t20 0" stroke="#6D28D9" stroke-width="2" fill="none"/>`,196,52,100,40,"end")}
+ ${reg("c17","🦋 Hormones",`<path d="M220 104 q-14 -12 -16 2 q2 10 16 2 q14 8 16 -2 q-2 -14 -16 -2 Z" fill="#F4E1A6" stroke="#9A4B00" stroke-width="2"/>`,204,104,100,96,"end")}
+ ${reg("c22","🛡️ Lymph nodes",`<g fill="#A7D7A0" stroke="#2E7D32" stroke-width="1.5"><circle cx="158" cy="138" r="5"/><circle cx="152" cy="150" r="4"/><circle cx="164" cy="150" r="3.5"/></g>`,150,145,100,144,"end")}
+ ${reg("c19","🫁 Lungs",`<g fill="#F6D5CF" stroke="#C2410C" stroke-width="2"><ellipse cx="192" cy="175" rx="22" ry="38"/><ellipse cx="248" cy="175" rx="22" ry="38"/></g>`,172,185,100,196,"end")}
+ ${reg("c21","🫘 Kidneys",`<g fill="#E8A49A" stroke="#9A3B2B" stroke-width="2"><ellipse cx="176" cy="262" rx="9" ry="14"/><ellipse cx="264" cy="262" rx="9" ry="14"/></g>`,167,262,100,250,"end")}
+ ${reg("c13","🖐️ Skin",`<circle cx="114" cy="290" r="13" fill="#FDE7C8" stroke="#C2410C" stroke-width="2"/>`,104,292,100,300,"end")}
+ ${reg("c14","🦴 Bones and joints",`<rect x="182" y="352" width="12" height="80" rx="6" fill="#fff" stroke="#9A8F80" stroke-width="2"/><circle cx="188" cy="352" r="8" fill="#fff" stroke="#9A8F80" stroke-width="2"/><circle cx="188" cy="432" r="8" fill="#fff" stroke="#9A8F80" stroke-width="2"/>`,182,395,100,395,"end")}
+ ${reg("c15","💪 Muscles",`<ellipse cx="310" cy="178" rx="11" ry="28" fill="#E57373" stroke="#9A3B2B" stroke-width="2" transform="rotate(-8 310 178)"/>`,320,170,348,150,"start")}
+ ${reg("c18","❤️ Heart",`<path d="M232 182 c-6 -10 -22 -6 -18 8 c3 9 18 18 18 18 c0 0 15 -9 18 -18 c4 -14 -12 -18 -18 -8 Z" fill="#E53935" stroke="#9A3B2B" stroke-width="1.5"/>`,250,195,348,200,"start")}
+ ${reg("c20","🍽️ Digestion",`<ellipse cx="236" cy="238" rx="24" ry="13" transform="rotate(-15 236 238)" fill="#F4C7A1" stroke="#C2410C" stroke-width="2"/><path d="M196 275 q10 10 20 0 t20 0 t20 0" stroke="#C2410C" stroke-width="4" fill="none"/>`,258,240,348,245,"start")}
+ ${reg("c23","👶 Reproduction",`<path d="M205 312 Q220 330 235 312 L230 300 H210 Z" fill="#F3C1D7" stroke="#A63D6B" stroke-width="2"/>`,236,312,348,320,"start")}
+ </svg></div><p class="small muted" style="margin:.4rem 0 0">Cells and biology chapters are in Units 1 and 2 below. For body directions and tissues, see <a href="#learn-c12">Chapter 12</a>.</p></div>`;}
+
+/* ============================================================
+   WORD MATCHING GAME
+   ============================================================ */
+let MT=null;
+function renderMatch(){currentCh=null;const opts=CHAPTERS.filter(c=>Object.keys(TERM_CH).filter(t=>TERM_CH[t]===c.id&&G[t]).length>=6);
+ show(`<p><a href="#play">← Play and practice</a></p><h1>🧩 Word match</h1><div class="card"><p>Match each key word to its meaning. Tap a word, then tap its meaning. Try to be fast and make no mistakes.</p>
+ <div class="row"><div style="flex:1;min-width:200px"><label class="sr" for="mtch">Words from</label><select id="mtch"><option value="">All chapters (mixed)</option>${opts.map(c=>`<option value="${c.id}">Chapter ${c.num}: ${esc(c.title)}</option>`).join("")}</select></div><button class="btn" id="mtGo">Start ▶</button></div></div><div id="mtBoard"></div>`,"play");
+ if(MT&&MT.last)$("#mtch").value=MT.last;$("#mtGo").onclick=()=>startMatch($("#mtch").value);}
+function startMatch(chId){stopAnims();const pool=Object.keys(G).filter(t=>!chId||TERM_CH[t]===chId);const ids=shuffle(pool.slice()).slice(0,6);
+ MT={last:chId,key:chId||"all",ids,left:shuffle(ids.slice()),right:shuffle(ids.slice()),done:new Set(),sel:null,miss:0,t0:Date.now(),timer:0};
+ MT.timer=setInterval(()=>{const t=$("#mtTime");if(t)t.textContent=fmtSec((Date.now()-MT.t0)/1000);},500);anims.push(()=>clearInterval(MT.timer));drawMatch();}
+function fmtSec(s){s=Math.round(s);return Math.floor(s/60)+":"+String(s%60).padStart(2,"0");}
+function drawMatch(msg,ok){const b=$("#mtBoard");if(!b)return;const best=(S.match||{})[MT.key];
+ const btn=(id,side)=>{const done=MT.done.has(id);const sel=MT.sel&&MT.sel.id===id&&MT.sel.side===side;const t=side==="w"?tr(id):"";
+  return `<button class="mt${done?" ok":""}${sel?" sel":""}" data-mt="${side}:${id}" ${done?"disabled":""} aria-pressed="${sel}">${side==="w"?`<b>${esc(G[id][0])}</b>${t?`<span class="small" style="color:var(--purple)">${esc(t)}</span>`:""}`:esc(G[id][1])}</button>`;};
+ const fin=MT.done.size===MT.ids.length;
+ b.innerHTML=`<div class="card"><div class="row" style="justify-content:space-between"><span>⏱ <b id="mtTime">${fmtSec((Date.now()-MT.t0)/1000)}</b></span><span class="small muted">${MT.done.size} of ${MT.ids.length} matched · ${MT.miss} mistake${MT.miss===1?"":"s"}${best?` · Best: ${fmtSec(best)}`:""}</span></div>
+ <div aria-live="polite">${msg?`<div class="fb ${ok?"ok":"no"}">${msg}</div>`:""}</div>
+ ${fin?"":`<div class="match-grid"><div class="opts"><span class="small muted">Words</span>${MT.left.map(id=>btn(id,"w")).join("")}</div><div class="opts"><span class="small muted">Meanings</span>${MT.right.map(id=>btn(id,"m")).join("")}</div></div>`}
+ ${fin?`<div class="row" style="margin-top:.6rem"><button class="btn" id="mtAgain">Play again ▶</button><a class="btn plain" href="#words">Study the word bank</a></div>`:""}</div>`;
+ if(fin)$("#mtAgain").onclick=()=>startMatch(MT.last);}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-mt]");if(!b||!MT)return;const [side,id]=b.dataset.mt.split(":");
+ if(!MT.sel||MT.sel.side===side){MT.sel=MT.sel&&MT.sel.id===id&&MT.sel.side===side?null:{side,id};drawMatch();return;}
+ if(MT.sel.id===id){MT.done.add(id);MT.sel=null;logAct(1);
+  if(MT.done.size===MT.ids.length){clearInterval(MT.timer);const s=(Date.now()-MT.t0)/1000;if(!S.match)S.match={};const prev=S.match[MT.key];const rec=!prev||s<prev;if(rec)S.match[MT.key]=s;save();
+   drawMatch(`🎉 All matched in <b>${fmtSec(s)}</b> with ${MT.miss} mistake${MT.miss===1?"":"s"}.${rec&&prev?" New best time!":""}`,true);}
+  else drawMatch(`✅ <b>${esc(G[id][0])}</b>: ${esc(G[id][1])}`,true);}
+ else{MT.miss++;MT.sel=null;drawMatch("Not a match. Try again.",false);}});
+
+/* ============================================================
+   PLAY HUB, CASES PAGE, STANDALONE DIAGRAM AND LOOP PAGES
+   ============================================================ */
+function renderPlay(){currentCh=null;
+ show(`<h1>🎮 Play and practice</h1><p class="muted">Short activities that help you remember. Everything you answer here counts toward your daily goal.</p>
+ <div class="grid">
+ <div class="card ch-card"><div class="ch-emoji">🧩</div><h2>Word match</h2><p class="muted">Match key words to their meanings against the clock.</p><div class="row"><a class="btn" href="#match">Play</a></div></div>
+ <div class="card ch-card"><div class="ch-emoji">🩺</div><h2>Patient cases</h2><p class="muted">${CASES.length} short nursing stories. Pick the organ or process involved.</p><div class="row"><a class="btn" href="#cases">Start</a></div></div>
+ <div class="card ch-card"><div class="ch-emoji">🌡️</div><h2>Feedback loops</h2><p class="muted">Move a slider and watch the body bring things back to normal.</p><div class="row"><a class="btn" href="#loop-glucose">Blood sugar</a><a class="btn ghost" href="#loop-temp">Temperature</a></div></div>
+ <div class="card ch-card"><div class="ch-emoji">📝</div><h2>Practice test</h2><p class="muted">Mixed TEAS-style questions from every chapter.</p><div class="row"><a class="btn" href="#practice">Start</a></div></div>
+ </div>
+ <h2 style="margin-top:1.2rem">🏷️ Label and trace diagrams</h2><div class="grid">${Object.entries(DIAG).map(([k,d])=>{const c=CH_BY[d.ch];return `<div class="card ch-card"><div class="ch-num">Chapter ${c.num}</div><h3>${esc(d.title)}</h3><div class="row"><a class="btn ghost" href="#diagram-${k}">Open</a></div></div>`;}).join("")}</div>`,"play");}
+function renderCases(){currentCh=null;const chs=[...new Set(CASES.map(c=>c[0]))];
+ show(`<p><a href="#play">← Play and practice</a></p><h1>🩺 Patient cases</h1><p class="muted">Read each short story and choose the best answer. You see an explanation after each one.</p>
+ <div class="card"><div class="row" style="justify-content:space-between"><div style="flex:1;min-width:200px"><label class="sr" for="caseCh">Chapter</label><select id="caseCh"><option value="">All chapters</option>${chs.map(id=>`<option value="${id}">Chapter ${CH_BY[id].num}: ${esc(CH_BY[id].title)}</option>`).join("")}</select></div><span class="small muted" id="caseScore"></span></div></div><div id="caseList"></div>`,"play");
+ const draw=()=>{const f=$("#caseCh").value;$("#caseList").innerHTML=CASES.map((c,i)=>!f||c[0]===f?caseCard(i):"").join("");$("#caseScore").textContent="";};$("#caseCh").onchange=draw;draw();}
+function renderDiagramPage(key){const d=DIAG[key];currentCh=CH_BY[d.ch];const c=CH_BY[d.ch];
+ show(`<p><a href="#play">← Play and practice</a></p><h1>🏷️ ${esc(d.title)}</h1>${dgBlock(key)}<p><a href="#learn-${c.id}">Read Chapter ${c.num}: ${esc(c.title)} →</a></p>`,"play");initDg();}
+function renderLoopPage(kind){const at=Object.entries(LOOP_AT).filter(([,v])=>v[1]===kind).map(([k])=>CH_BY[k]);currentCh=at[0]||null;
+ show(`<p><a href="#play">← Play and practice</a></p><h1>🌡️ Feedback loop</h1>${loopBlock(kind)}<p>Read more: ${at.map(c=>`<a href="#learn-${c.id}">Chapter ${c.num}: ${esc(c.title)}</a>`).join(" · ")}</p>`,"play");initLoops();}
+
 function route(){stopAnims();speechStop();closePop();const h=(location.hash||"#home").slice(1);let m;
  if((m=h.match(/^learn-(c\d+)$/))&&CH_BY[m[1]])return renderLesson(m[1]);
  if((m=h.match(/^quiz-(c\d+)$/))&&CH_BY[m[1]])return startQuiz(m[1],"first");
  if(h==="practice")return renderPracticeStart();
+ if(h==="play")return renderPlay();
+ if(h==="cases")return renderCases();
+ if(h==="match")return renderMatch();
+ if((m=h.match(/^diagram-([a-z]+)$/))&&DIAG[m[1]])return renderDiagramPage(m[1]);
+ if((m=h.match(/^loop-([a-z]+)$/))&&LOOPS[m[1]])return renderLoopPage(m[1]);
  if(h==="review")return renderReviewStart();
  if(h==="words")return renderWords();
  if(h==="options")return renderOptions();
