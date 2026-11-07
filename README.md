@@ -16,6 +16,10 @@ CellWise is a single-page study app for English language learners preparing for 
 - "Nursing link" boxes that connect each idea to patient care
 - Interactive practice: diffusion and osmosis simulations, a sodium-potassium pump walkthrough, a Punnett square, and "put the steps in order" games
 - Chapter quizzes with an explanation after every answer, a "Fix my gaps" retry, spaced and mixed review, and a TEAS-style practice test
+- Label-and-trace diagrams of the cell, heart, lungs, digestive tract, and urinary system
+- Patient cases ("Think like a nurse") in the body-system chapters and on a Play page
+- Feedback-loop sliders for blood sugar and body temperature
+- A clickable body map on the home page, a timed word matching game, and a daily goal with a streak
 - Progress is saved in the browser (localStorage)
 
 ## Run it
