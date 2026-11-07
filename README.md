@@ -22,7 +22,15 @@ CellWise is a single-page study app for English language learners preparing for 
 
 It is one HTML file with no build step. Open `index.html` in a browser, or deploy the folder to any static host (it is set up for Vercel).
 
-The AI Tutor only works when the page runs inside Claude (as a Claude artifact). On other hosts, the Tutor panel says it is not available, and everything else works.
+The AI Tutor works in two ways:
+
+- Inside Claude (as a Claude artifact), it uses the student's Claude account.
+- On Vercel, it uses the server function in `api/tutor.js`, which calls the Claude API with your key. Students do not need a Claude account. Set these in Vercel > Project > Settings > Environment Variables, then redeploy:
+  - `ANTHROPIC_API_KEY` (required)
+  - `TUTOR_MODEL` (optional, default `claude-haiku-5-5`)
+  - `ALLOWED_ORIGINS` (optional, comma-separated site URLs allowed to call the Tutor)
+
+If no key is set, the Tutor panel says it could not connect, and everything else still works.
 
 ## Credits
 
