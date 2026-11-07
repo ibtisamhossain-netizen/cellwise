@@ -1,6 +1,7 @@
 // Vercel serverless function: the CellWise AI Tutor backend.
-// The page sends a finished prompt, this calls the Claude API with the
-// server-side key, and returns plain text. The key never reaches the browser.
+// The page sends a finished prompt, this calls the Google Gemini API (free
+// tier) with the server-side key, and returns plain text. The key never
+// reaches the browser.
 //
 // Layered defense:
 // 1) Fixed system prompt that limits the model to CellWise tutoring.
@@ -9,7 +10,11 @@
 //    max_tokens, simple per-IP rate limit.
 // 4) Only runs when a student presses a button in the Tutor panel.
 
-const MODEL = process.env.TUTOR_MODEL || "claude-haiku-5-5";
+// Only free-tier Flash models are allowed, so a wrong setting cannot run up a bill.
+const ALLOWED_MODELS = ["gemini-2.5-flash", "gemini-2.5-flash-lite"];
+const MODEL = ALLOWED_MODELS.includes(process.env.TUTOR_MODEL)
+  ? process.env.TUTOR_MODEL
+  : "gemini-2.5-flash";
 const MAX_PROMPT_CHARS = 60000;
 const MAX_TOKENS = 700;
 
@@ -52,12 +57,12 @@ export default async function handler(req, res) {
 
   // Health check so the page knows whether the Tutor is set up.
   if (req.method === "GET") {
-    return res.status(200).json({ ok: Boolean(process.env.ANTHROPIC_API_KEY) });
+    return res.status(200).json({ ok: Boolean(process.env.GEMINI_API_KEY) });
   }
 
   if (req.method !== "POST") return res.status(405).json({ code: "method_not_allowed" });
   if (!allowedOrigin(origin)) return res.status(403).json({ code: "forbidden_origin" });
-  if (!process.env.ANTHROPIC_API_KEY) return res.status(503).json({ code: "not_configured" });
+  if (!process.env.GEMINI_API_KEY) return res.status(503).json({ code: "not_configured" });
 
   const ip = (req.headers["x-forwarded-for"] || "").split(",")[0].trim() || "unknown";
   if (rateLimited(ip)) return res.status(429).json({ code: "rate_limited" });
@@ -72,31 +77,39 @@ export default async function handler(req, res) {
   }
 
   try {
-    const r = await fetch("https://api.anthropic.com/v1/messages", {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`;
+    const r = await fetch(url, {
       method: "POST",
       headers: {
         "content-type": "application/json",
-        "x-api-key": process.env.ANTHROPIC_API_KEY,
-        "anthropic-version": "2023-06-01",
+        "x-goog-api-key": process.env.GEMINI_API_KEY,
       },
       body: JSON.stringify({
-        model: MODEL,
-        max_tokens: MAX_TOKENS,
-        system: SYSTEM,
-        messages: [{ role: "user", content: prompt }],
+        systemInstruction: { parts: [{ text: SYSTEM }] },
+        contents: [{ role: "user", parts: [{ text: prompt }] }],
+        generationConfig: {
+          maxOutputTokens: MAX_TOKENS,
+          // Turn off "thinking" so short answers are fast and fit the token limit.
+          thinkingConfig: { thinkingBudget: 0 },
+        },
       }),
     });
     const data = await r.json().catch(() => null);
     if (!r.ok) {
-      const code = r.status === 429 || r.status === 529 ? "rate_limited" : "upstream_error";
-      console.error("Claude API error", r.status, data && data.error);
-      return res.status(r.status === 429 || r.status === 529 ? 429 : 502).json({ code });
+      const busy = r.status === 429 || r.status === 503;
+      console.error("Gemini API error", r.status, data && data.error);
+      return res.status(busy ? 429 : 502).json({ code: busy ? "rate_limited" : "upstream_error" });
     }
-    const text = (data.content || [])
-      .filter(b => b.type === "text")
-      .map(b => b.text)
+    const cand = (data && data.candidates && data.candidates[0]) || null;
+    if (!cand) {
+      console.error("Gemini returned no answer", data && data.promptFeedback);
+      return res.status(502).json({ code: "blocked" });
+    }
+    const text = ((cand.content && cand.content.parts) || [])
+      .filter(p => typeof p.text === "string" && !p.thought)
+      .map(p => p.text)
       .join("");
-    return res.status(200).json({ text, truncated: data.stop_reason === "max_tokens" });
+    return res.status(200).json({ text, truncated: cand.finishReason === "MAX_TOKENS" });
   } catch (e) {
     console.error("Tutor function failed", e);
     return res.status(502).json({ code: "upstream_error" });
