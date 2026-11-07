@@ -11,12 +11,13 @@
 // 4) Only runs when a student presses a button in the Tutor panel.
 
 // Only free-tier Flash models are allowed, so a wrong setting cannot run up a bill.
-const ALLOWED_MODELS = ["gemini-2.5-flash", "gemini-2.5-flash-lite"];
+const ALLOWED_MODELS = ["gemini-3.5-flash", "gemini-3.1-flash-lite"];
 const MODEL = ALLOWED_MODELS.includes(process.env.TUTOR_MODEL)
   ? process.env.TUTOR_MODEL
-  : "gemini-2.5-flash";
+  : "gemini-3.5-flash";
 const MAX_PROMPT_CHARS = 60000;
-const MAX_TOKENS = 700;
+// Thinking tokens count toward this limit, so leave room above the ~130-word answer.
+const MAX_TOKENS = 2048;
 
 const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS ||
   "https://cellwise-flame.vercel.app,http://localhost:3000")
@@ -89,8 +90,8 @@ export default async function handler(req, res) {
         contents: [{ role: "user", parts: [{ text: prompt }] }],
         generationConfig: {
           maxOutputTokens: MAX_TOKENS,
-          // Turn off "thinking" so short answers are fast and fit the token limit.
-          thinkingConfig: { thinkingBudget: 0 },
+          // Keep "thinking" low so short answers come back fast.
+          thinkingConfig: { thinkingLevel: "low" },
         },
       }),
     });

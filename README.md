@@ -27,7 +27,7 @@ The AI Tutor works in two ways:
 - Inside Claude (as a Claude artifact), it uses the student's Claude account.
 - On Vercel, it uses the server function in `api/tutor.js`, which calls the Google Gemini API on its free tier. Students do not need any account. Get a free key at https://aistudio.google.com/apikey, then set these in Vercel > Project > Settings > Environment Variables and redeploy:
   - `GEMINI_API_KEY` (required)
-  - `TUTOR_MODEL` (optional: `gemini-2.5-flash` (default) or `gemini-2.5-flash-lite`, which allows more requests per minute)
+  - `TUTOR_MODEL` (optional: `gemini-3.5-flash` (default) or `gemini-3.1-flash-lite`, which allows more requests per minute)
   - `ALLOWED_ORIGINS` (optional, comma-separated site URLs allowed to call the Tutor)
 
 On the free tier Google may use prompts to improve its products, and there is a daily request limit. If no key is set, the Tutor panel says it could not connect, and everything else still works.
